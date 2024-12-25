@@ -6,7 +6,6 @@ return [
     'home'        => 'Trang chủ',
     'about'       => 'Về us',
     'services'    => 'Dịch vụ',
-    'pricing'     => '🐧🐧🐧',
     'contact'     => 'Liên hệ',
     
     'success_msg' => 'Thao tác thành công',

@@ -9,7 +9,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    <!-- vite(['resources/js/app.js', 'resources/css/app.css']) -->
 </head>
 
 <body>
@@ -52,12 +52,6 @@
                     <li>
                         <a href="#" class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
                             {{__('public.services')}}
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#" class="block py-2 px-3 md:p-0 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700">
-                            {{__('public.pricing')}}
                         </a>
                     </li>
 
