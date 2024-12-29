@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductController;
@@ -32,15 +34,16 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(AuthController::class)->group(function () {
     // Đăng ký đăng nhập
-    Route::post('login',   'login')->name('login')->middleware('guest');
-    Route::post('register', 'register')->name('register')->middleware('guest');
-    Route::post('logout', 'destroy')->name('logout')->middleware('auth');
+    Route::post('login',   'login')      ->name('login')    ->middleware('guest');
+    Route::post('register', 'register')  ->name('register') ->middleware('guest');
+    Route::post('logout', 'destroy')     ->name('logout')   ->middleware('auth');
 
     // Quên mk
-    Route::get('forgot-password',   'show_forgot_password_form')->name('password.request');
-    Route::post('forgot-password',  'send_reset_link_email')->name('password.email');
-    Route::get('reset-password/{token}', 'show_reset_password_form')->name('password.reset');
-    Route::post('reset-password',   'reset_password')->name('password.update');
+    Route::get('forgot-password',   'show_forgot_password_form')     ->name('password.request');
+    Route::post('forgot-password',  'send_reset_link_email')         ->name('password.email');
+    Route::get('reset-password/{token}', 'show_reset_password_form') ->name('password.reset');
+    Route::post('reset-password',   'reset_password')                ->name('password.update');
+
     // Đổi mk 
     Route::get('change-password', 'show_change_password_form')->name('password.changeForm')
         ->middleware(['auth']);
@@ -53,6 +56,10 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(MailController::class)->group(function () {
     Route::get('sendmail',  'index')->name('mails')->middleware('auth');
     Route::post('sendmail', 'sendmail')->middleware('auth');
+});
+
+Route::controller(BlogController::class)->prefix('blog')->group(function() {
+    Route::get('/', 'index') -> name('blog');
 });
 
 // test

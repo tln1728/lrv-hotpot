@@ -51,7 +51,7 @@ class UserRegistered extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject('test')
-            ->action('bitch ass nigga',url('test'))
+            ->action('Click me',url('test'))
             ->line("Thank you {$this -> user -> name} for using our application");
     }
 }
