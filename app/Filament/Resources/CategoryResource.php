@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Filament\Resources\CategoryResource\RelationManagers\PostsRelationManager;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+    protected static ?string $navigationGroup = 'Blog';
+    protected static ?int $navigationSort = -5;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder';
 
@@ -57,7 +60,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // PostsRelationManager::class,
+            PostsRelationManager::class,
         ];
     }
     

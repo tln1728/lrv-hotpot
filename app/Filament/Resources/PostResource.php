@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
 use App\Filament\Resources\PostResource\RelationManagers\AuthorsRelationManager;
+use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 
@@ -16,7 +17,6 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\MarkdownEditor;
@@ -36,7 +36,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
-
+    protected static ?string $navigationGroup = 'Blog';
+    protected static ?int $navigationSort = -4;
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     public static function form(Form $form): Form
@@ -96,9 +97,12 @@ class PostResource extends Resource
                     ->toggleable(),
 
                 TextColumn::make('title')
+                    ->limit(25)
                     ->searchable(),
-
-                TextColumn::make('slug')
+                    
+                TextColumn::make('slug')    
+                    ->limit(25)
+                    ->toggleable(isToggledHiddenByDefault:true)
                     ->searchable(),
 
                 TextColumn::make('category.name')
@@ -113,10 +117,16 @@ class PostResource extends Resource
 
                 TextColumn::make('tags')
                     ->badge()
+                    ->toggleable()
                     ->searchable(),
 
                 ToggleColumn::make('published')
                     ->sortable(),
+
+                TextColumn::make('comments_count')
+                    ->sortable()
+                    ->toggleable()
+                    ->counts('comments'),
 
                 TextColumn::make('created_at')
                     ->sortable()
@@ -135,6 +145,11 @@ class PostResource extends Resource
                 // ),
 
                 TernaryFilter::make('published'),
+
+                SelectFilter::make('Authors')
+                    -> preload()
+                    -> multiple()
+                    -> relationship('authors','name'), 
 
                 SelectFilter::make('category') 
                     ->multiple()
@@ -162,6 +177,7 @@ class PostResource extends Resource
     {
         return [
             AuthorsRelationManager::class,
+            CommentsRelationManager::class,
         ];
     }
 

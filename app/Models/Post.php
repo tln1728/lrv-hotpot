@@ -32,4 +32,8 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('point')->withTimestamps();
     }
+
+    public function comments() {
+        return $this -> morphMany(Comment::class,'commentable');
+    }
 }

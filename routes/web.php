@@ -65,7 +65,7 @@ Route::controller(BlogController::class)->prefix('blog')->group(function() {
 // test
 Route::view('test', 'test');
 Route::get('test2', function () {
-    $user = \App\Models\User::where('is_admin', 1)->first();
+    $user = \App\Models\User::where('role', 1)->first();
     \Filament\Notifications\Notification::make()
         ->title('Saved successfully')
         ->sendToDatabase($user);

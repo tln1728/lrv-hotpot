@@ -22,7 +22,7 @@ class SendUserRegisteredNotification implements ShouldQueue
      */
     public function handle(object $event): void
     {
-        $admin = User::where('is_admin', 1)->first();
+        $admin = User::where('role', User::ROLE_ADMIN)->first();
 
         if ($admin) {
             $admin -> notify(new UserRegistered($event -> user));
