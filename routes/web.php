@@ -58,15 +58,27 @@ Route::controller(MailController::class)->group(function () {
     Route::post('sendmail', 'sendmail')->middleware('auth');
 });
 
+
+// Blog
 Route::controller(BlogController::class)->prefix('blog')->group(function() {
-    Route::get('/', 'index') -> name('blog');
+    Route::get('/', 'index') -> name('blog.index');
+    Route::get('category/{category:slug}', 'showCategory') -> name('blog.categories.show');
+    Route::get('post/{post:slug}', 'showPost')             -> name('blog.posts.show');
+
+    Route::middleware('auth') -> group(function() {
+        Route::post('posts/{post:slug}/comments', 'storeComment')  -> name('blog.posts.comments.store');
+        Route::post('comments/{comment}/replies', 'storeReply')    -> name('blog.comments.replies.store');
+    });
 });
 
 // test
 Route::view('test', 'test');
 Route::get('test2', function () {
-    $user = \App\Models\User::where('role', 1)->first();
-    \Filament\Notifications\Notification::make()
-        ->title('Saved successfully')
-        ->sendToDatabase($user);
+    // $user = \App\Models\User::where('role', 1)->first();
+    // \Filament\Notifications\Notification::make()
+    //     ->title('Saved successfully')
+    //     ->sendToDatabase($user);
+
+    $user = \App\Models\Post::first();
+    dd($user -> author);
 });

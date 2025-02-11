@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Models\Post;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\RelationManagers;
-use App\Filament\Resources\PostResource\RelationManagers\AuthorsRelationManager;
 use App\Filament\Resources\PostResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -58,11 +57,15 @@ class PostResource extends Resource
                         Select::make('category_id')
                             ->label('Category')
                             ->relationship('category', 'name')
-                            ->searchable()
-                            ->preload()
                             ->required(),
 
                         TagsInput::make('tags')
+                            ->required(),
+
+                        Select::make('user_id')
+                            ->label('Author')
+                            ->relationship('author','name')
+                            ->searchable()
                             ->required(),
 
                         MarkdownEditor::make('content')
@@ -109,7 +112,7 @@ class PostResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('authors.name')
+                TextColumn::make('author.name')
                     ->badge()
                     ->color('warning')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -146,10 +149,10 @@ class PostResource extends Resource
 
                 TernaryFilter::make('published'),
 
-                SelectFilter::make('Authors')
+                SelectFilter::make('Author')
                     -> preload()
                     -> multiple()
-                    -> relationship('authors','name'), 
+                    -> relationship('author','name'), 
 
                 SelectFilter::make('category') 
                     ->multiple()
@@ -176,7 +179,6 @@ class PostResource extends Resource
     public static function getRelations(): array
     {
         return [
-            AuthorsRelationManager::class,
             CommentsRelationManager::class,
         ];
     }

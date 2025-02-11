@@ -27,7 +27,7 @@ Home
     <x-btn-feature :need-login="true" route="password.changeForm" color="green">Change password</x-btn-feature>
     
     <!-- Blog -->
-    <x-btn-feature route="blog" color="teal">Blog</x-btn-feature>
+    <x-btn-feature route="blog.index" color="teal">Blog</x-btn-feature>
 
 </div>
 @endsection

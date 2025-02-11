@@ -14,9 +14,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $userAttributes = $request->validate([
-            'name'      => 'required| max:30',
-            'email'     => 'required| email| unique:users,email',
-            'password'  => 'required| min:3| confirmed',
+            'name'      => 'required|max:30',
+            'email'     => 'required|email|unique:users,email',
+            'password'  => 'required|min:3|confirmed',
         ]);
 
         $user = User::create($userAttributes);
@@ -31,12 +31,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $attributes = $request->validate([
-            'email'     => 'required| email| max:255',
+            'email'     => 'required|email|max:255',
             'password'  => 'required',
         ]);
 
-        if (Auth::attempt($attributes)) {
-            request()->session()->regenerate();
+        $remember = $request->remember ? true : false;
+
+        if (Auth::attempt($attributes, $remember)) {
+            $request->session()->regenerate();
             return redirect()
                 ->to(session()->previousUrl())
                 ->with('success', 'Hello, ' . Auth::user()->name);
@@ -115,7 +117,6 @@ class AuthController extends Controller
     public function show_change_password_form() {
         return view('auth.change-password');
     }
-
     public function change_password(Request $request) {
         $request -> validate([
             'password' => 'required|confirmed|min:3',

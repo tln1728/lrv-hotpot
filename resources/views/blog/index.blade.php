@@ -36,9 +36,9 @@ Topic Nav
     </div>
 </nav> -->
 
-<div class="flex py-6">
+<div class="flex-nowrap flex py-6 gap-4">
     <!-- Posts Section -->
-    <section class="flex-1 flex flex-col px-3">
+    <section class="flex flex-col gap-4 basis-8/12">
 
         <!-- head filter -->
         <div class="shoadow border flex gap-3 p-6">
@@ -62,29 +62,32 @@ Topic Nav
         </div>
 
         <!-- posts -->
-        <div class="flex flex-wrap gap-6">
+        <div class="flex flex-wrap -mx-2">
             @foreach ($posts as $post)
-            <article class="flex basis-5/12 flex-1 flex-col shadow-lg">
-                <!-- Article Image -->
-                <a href="/test" class="hover:opacity-75">
-                    <img class="max-h-48 object-cover max-w-full" width="100%" src="{{url('storage/'.$post -> thumbnail)}}">
-                </a>
-                <div class="bg-white flex flex-col justify-start p-6">
-                    <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $post -> category -> name}}</a>
-                    <a href="/test" class="text-3xl font-bold hover:text-gray-700 pb-4">{{$post -> title}}</a>
-                    <p class="text-sm pb-3">
-                        By <a href="#" class="font-semibold hover:text-gray-800">
-                            {{ implode(', ', $post->authors->pluck('name')->toArray()) }}
-                        </a>Published on {{$post -> created_at}}
-                    </p>
-                    <span href="#" class="pb-6">{{Str::words($post -> content,24,)}}</span>
-                    <a href="/test" class="uppercase flex gap-1 text-blue-800 hover:text-black">Continue Reading
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-                        </svg>
+            <div class="w-1/2 px-2 mb-4">
+                <article class="flex flex-col h-full shadow-lg">
+                    <!-- Article Image -->
+                    <a href="{{route('blog.posts.show', $post -> slug)}}" class="hover:opacity-75">
+                        <!-- <img class="max-h-48 object-cover max-w-full" width="100%" src="{{Storage::url($post -> thumbnail)}}"> -->
+                        <img class="max-h-48 object-cover max-w-full" width="100%" src="{{$post -> thumbnail}}">
                     </a>
-                </div>
-            </article>
+                    <div class="bg-white flex flex-col justify-start p-6">
+                        <a href="{{route('blog.posts.show',$post -> category -> slug)}}" class="text-blue-700 text-sm font-bold uppercase pb-4">{{ $post -> category -> name}}</a>
+                        <a href="{{route('blog.posts.show', $post -> slug)}}" class="text-3xl font-bold hover:text-gray-700 pb-4">{{$post -> title}}</a>
+                        <p class="text-sm pb-3">
+                            By <span class="font-semibold hover:text-gray-800">
+                                {{$post->author->name}}
+                            </span> - {{$post -> created_at -> diffForHumans()}}
+                        </p>
+                        <span class="pb-6">{{Str::words($post -> content,24,)}}</span>
+                        <a href="{{route('blog.posts.show', $post -> slug)}}" class="uppercase flex gap-1 text-blue-800 hover:text-black">Continue Reading
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+            </div>
             @endforeach
         </div>
 
@@ -92,34 +95,25 @@ Topic Nav
         {{ $posts -> links() }}
     </section>
 
-    <!-- Filter, Sidebar Section -->
-    <x-collapse class="basis-4/12" data-accordion="open" data-inactive-classes="text-dark" data-active-classes="bg-white border-b-0 shadow-sm">
-        <x-collapse-item id="test" title="Category">
-            <p class="mb-2">Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
+    <!-- Sidebar Section -->
+     
+    <x-collapse class="sm:basis-4/12 sm:block hidden" data-accordion="open" data-inactive-classes="text-dark" data-active-classes="bg-white border-b-0">
+        @include('blog.partials.category',['expanded' => 'true'])
 
+        <!-- <x-collapse-item id="test2" title="Category">
             <a href="#" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
                 Get to know us
             </a>
-        </x-collapse-item>
-        
-        <x-collapse-item id="test2" title="Category">
-            <p class="mb-2">Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
+        </x-collapse-item> -->
 
-            <a href="#" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-4">
-                Get to know us
-            </a>
-        </x-collapse-item>
+    <!-- <div class="w-full border bg-white shadow flex flex-col my-4 p-6">
+        <p class="text-xl font-semibold pb-5">Header</p>
+        <span>content</span>
 
-        <div class="w-full bg-white shadow flex flex-col my-4 p-6">
-            <p class="text-xl font-semibold pb-5">Header</p>
-            <span>content</span>
-
-            <a href="#" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-6">
-                <i class="fab fa-instagram mr-2"></i> button
-            </a>
-        </div>
-
+        <a href="#" class="w-full bg-blue-800 text-white font-bold text-sm uppercase rounded hover:bg-blue-700 flex items-center justify-center px-2 py-3 mt-6">
+            <i class="fab fa-instagram mr-2"></i> button
+        </a>
+    </div> -->
     </x-collapse>
-
 </div>
 @endsection

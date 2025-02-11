@@ -51,7 +51,10 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('name'),
-                TextColumn::make('email'),
+                TextColumn::make('email')
+                    -> copyable()
+                    -> copyMessage('Email address copied')
+                    -> copyMessageDuration(1500),
                 TextColumn::make('posts_count') 
                     -> counts('posts'),
                 TextColumn::make('comments_count') 

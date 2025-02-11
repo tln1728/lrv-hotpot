@@ -15,6 +15,16 @@ class SendingMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+    public $maxExceptions = 3;
+    public $timeout = 30;
+    public $failOnTimeout = true;
+
     protected $to;
     protected $cc;
     protected $bcc;
@@ -25,7 +35,7 @@ class SendingMail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct($to, $cc, $bcc, $subject, $content, $user)
+    public function __construct($to, $cc = null, $bcc = null, $subject, $content, $user)
     {
         $this->to = $to;
         $this->cc = $cc;
@@ -48,5 +58,22 @@ class SendingMail implements ShouldQueue
                 $this->subject,
                 $this->content
             ));
+    }
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     * @return void
+     */
+    public function failed(\Throwable $exception) {}
+
+    /**
+     * Calculate the number of seconds to wait before retrying the job.
+     *
+     * @return array
+     */
+    public function backoff()
+    {
+        return [1, 5, 10];
     }
 }

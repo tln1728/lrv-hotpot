@@ -13,8 +13,6 @@
     </svg>
 </button>
 
-<div id="{{$id}}-body" class="hidden shadow-lg -mt-6 mb-6" aria-labelledby="{{$id}}">
-    <div class="p-5 border border-gray-300">
-        {{$slot}}
-    </div>
+<div id="{{$id}}-body" class="hidden shadow-sm -mt-6 mb-6" aria-labelledby="{{$id}}">
+    {{$slot}}
 </div>

@@ -19,13 +19,13 @@ class PostFactory extends Factory
      */
         public function definition(): array
         {
-            $category_id = fake() -> randomElement(Category::pluck('id'));
+            $category_id = Category::select('id') -> inRandomOrder() -> first();
+
             return [
                 'title'        => fake() -> sentence(),
                 'category_id'  => $category_id,
-                // 'thumbnail' => fake() -> imageUrl(),
-                // 'thumbnail' => fake() -> imageUrl(640, 480, 'post', true),
-                'thumbnail' => 'http://picsum.photos/seed/'.rand(0,1000),
+                'user_id'      => User::factory() -> create(),
+                'thumbnail' => 'http://picsum.photos/'.rand(700,1000),
                 'slug' => fn (array $attributes) => Str::slug($attributes['title']),
                 'content'   => fake() -> paragraphs(3,true),
                 'tags'      => fake() -> words(3),

@@ -11,7 +11,7 @@ class Comment extends Model
 
     // protected $fillable = [
         // 'user_id',
-        // 'comment'
+        // 'content'
     // ];
     
     protected $guarded = [];
@@ -24,7 +24,11 @@ class Comment extends Model
         return $this -> morphTo();
     }
 
-    public function comments() {
-        return $this -> morphMany(Comment::class,'commentable');
+    public function replies() {
+        return $this -> morphMany(Comment::class, 'commentable');
+    }
+
+    public function parent() {
+        return $this -> belongsTo(Comment::class, 'parent_id');
     }
 }

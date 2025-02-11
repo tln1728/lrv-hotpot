@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,15 +19,14 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        // Comment::factory() chỉ tạo reply comment
-        $user_id = fake()->randomElement(User::pluck('id'));
-        $cmt     = fake()->randomElement(Comment::pluck('id'));
-
+        // only add reply comments
+        // $parentID = Comment::select('id') -> whereNull('parent_id') -> inRandomOrder() -> first() -> id;
         return [
-            'user_id'           => $user_id,
-            'commentable_id'    => $cmt,
-            'commentable_type'  => Comment::class,
-            'comment'           => fake()->sentence(),
+            'user_id'           => User::select('id') -> inRandomOrder() -> first() -> id,
+            // 'commentable_type'  => Comment::class,
+            // 'commentable_id'    => $parentID,
+            'content'           => fake()->sentence(),
+            // 'parent_id'         => $parentID,
         ];
     }
 }
